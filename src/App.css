@@ -1,0 +1,456 @@
+@font-face {
+  font-family: 'Lexend';
+  src: url('/Lexend-RegularItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PixelFont';
+  src: url('/thatthatnewpixelfamilytest-square.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelFont';
+  src: url('/thatthatnewpixelfamilytest-round.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelFont';
+  src: url('/thatthatnewpixelfamilytest-italicsquare.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PixelFont';
+  src: url('/thatthatnewpixelfamilytest-italicround.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #1c1d1eff;
+}
+
+.model-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.model-container > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.model-container table {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* Title overlay */
+.title-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  color: #fff;
+  font-family: 'PixelFont', 'Courier New', monospace;
+  pointer-events: none;
+}
+
+.title-overlay h1 {
+  font-size: 4rem;
+  margin-left: 1rem;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 3px;
+  color: #bad8e7ff;
+}
+
+.title-overlay .hint {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin-top: 0.5rem;
+}
+
+/* DDR-style tab container */
+.tab-container {
+  position: fixed;
+  top: 13rem;
+  left: 1.5rem;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 200px;
+}
+
+/* White box underneath text that moves */
+.tab-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #bad8e7ff;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Static line items */
+.tab-line {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+/* Tab label text */
+.tab-label {
+  font-family: 'PixelFont', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #666;
+  letter-spacing: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Selected line text styling */
+.tab-line-selected .tab-label {
+  color: #000;
+}
+
+/* Hover effect */
+.tab-line:hover .tab-label {
+  color: #888;
+}
+
+/* Don't dim selected on hover */
+.tab-line-selected:hover .tab-label {
+  color: #000;
+}
+
+/* Projects sub-tab container */
+.sub-tab-container {
+  position: fixed;
+  top: 13rem;
+  left: 14rem;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 250px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Sub-tab highlight box */
+.sub-tab-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(186, 216, 231, 0.3);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sub-tab line items */
+.sub-tab-line {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+/* Sub-tab label text */
+.sub-tab-label {
+  font-family: 'PixelFont', 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #555;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Selected sub-tab text styling */
+.sub-tab-line-selected .sub-tab-label {
+  color: #bad8e7ff;
+}
+
+/* Sub-tab hover effect */
+.sub-tab-line:hover .sub-tab-label {
+  color: #777;
+}
+
+/* Don't dim selected sub-tab on hover */
+.sub-tab-line-selected:hover .sub-tab-label {
+  color: #bad8e7ff;
+}
+
+/* Links sub-tab container */
+.links-sub-tab-container {
+  position: fixed;
+  top: 13rem;
+  left: 14rem;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Links sub-tab items */
+.links-sub-tab {
+  position: relative;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: 'PixelFont', 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #666;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  background: rgba(186, 216, 231, 0.05);
+  border: 1px solid transparent;
+}
+
+/* Links sub-tab hover effect with glow */
+.links-sub-tab:hover {
+  color: #bad8e7ff;
+  background: rgba(186, 216, 231, 0.15);
+  border-color: rgba(186, 216, 231, 0.3);
+  box-shadow: 0 0 15px rgba(186, 216, 231, 0.4);
+}
+
+/* Right content textbox */
+.content-box {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-family: 'PixelFont', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-weight: normal;
+  letter-spacing: 1px;
+  z-index: 100;
+  transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Project category styles */
+.project-category {
+  margin-bottom: 30px;
+}
+
+.project-category h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #bad8e7ff;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+/* Individual project styles */
+.project {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project:last-child {
+  border-bottom: none;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.project h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.award {
+  font-size: 0.75rem;
+  color: #bad8e7ff;
+  font-style: italic;
+}
+
+.current-badge {
+  font-size: 0.7rem;
+  color: #bad8e7ff;
+  font-style: italic;
+  background: rgba(186, 216, 231, 0.2);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.description {
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+.tech-stack {
+  font-size: 0.75rem;
+  color: rgba(186, 216, 231, 0.7);
+  margin-bottom: 6px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.status {
+  font-size: 0.75rem;
+  color: rgba(186, 216, 231, 0.6);
+  font-style: italic;
+}
+
+.project-link {
+  font-size: 0.8rem;
+  color: #bad8e7ff;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 6px;
+  transition: all 0.2s ease;
+}
+
+.project-link:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(186, 216, 231, 0.6);
+}
+
+/* Idle content styles */
+.idle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.bio {
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+
+/* Typing effect styles */
+.typing-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.typing-label {
+  font-size: 1rem;
+  color: #bad8e7ff;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.typing-text {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.5px;
+  display: inline-block;
+  min-height: 1.5em;
+}
+
+.typing-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Fade in animation for sub-tabs */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
